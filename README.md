@@ -1,1 +1,4 @@
-ParaAdaptiveCards
+AdaptiveCards
+-------------
+Adaptive Cards for Power BI is a simple concept that is designed to be easily implemented in new or existing Power BI solutions. It uses a Custom Visual that is a combination of both Card and Slicer utilising PowerBi's strengths in mixing and matching visual components. Templating is a new feature of Adaptive Cards and this is used to bind Power BI data by name to the Card. The visual is designed to be compliant to Microsoft standards for Power BI visuals, and should soon be available in the App Store.
+Find out more about implementing Adaptive cards at the blog: https://blog.paradigmbi.com.au/post/2020/10/03/adaptive-cards-for-power-bi
