@@ -1,7 +1,7 @@
 {
   "name": "powerbi-visuals-adaptivecards",
   "description": "AdaptiveCards",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": {
     "name": "Dmitry Vann",
     "email": "smith11041104@gmail.com"
