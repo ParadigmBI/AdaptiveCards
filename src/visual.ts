@@ -121,6 +121,7 @@ export class Visual implements IVisual {
 
     private bigDiv: Selection;
     private cardDiv: Selection;
+    private backG: Selection;
     private settings: SettingState;
     private previousUpdateData;
     private selectionManager: ISelectionManager;
@@ -294,12 +295,13 @@ export class Visual implements IVisual {
         this.sandBoxHeight = sandBoxHeight;
         this.bigDiv = d3.select(options.element).append("div").classed("bigDiv", true);
         let that = this;
+        this.backG = this.bigDiv.append("div").classed("backG", true);
+        this.cardDiv = this.bigDiv.append("div").attr("class", "cardDiv");
         let modal = this.bigDiv.append("div").attr("id", "confirm").classed("modal", true);
         let modalContent = modal.append("div").classed("modal-content", true);
         modalContent.append("spacn").classed("yes", true).classed("close", true).text("×");
         modalContent.append("p").classed("message", true).classed("modal-content", true).text("Some text in the Modal..");
         let loading = this.bigDiv.append("div").classed("loading", true).text("Loading&#8230;");
-        this.cardDiv = this.bigDiv.append("div").attr("class", "cardDiv");
         this.selectionManager = options.host.createSelectionManager();
         this.host = options.host;
         this.Behavior = new behavior();
@@ -323,12 +325,24 @@ export class Visual implements IVisual {
     }
 
     private drawCard(data, sandboxWidth) {
-        let childWidth = this.settings.cardWidth;
-        if (this.settings.isCardWidth) childWidth = (sandboxWidth - Visual.scrollWidth) / this.settings.cardCount;
-        childWidth -= (this.settings.margin + this.settings.padding + this.settings.borderSize) * 2;
+        let childWidth = this.settings.cardWidth, plus = (this.settings.margin + this.settings.padding + this.settings.borderSize) * 2;
+        let row = Math.floor(sandboxWidth / childWidth), cardWidth = row * childWidth, leftWidth = sandboxWidth - cardWidth - Visual.scrollWidth, col = Math.ceil(data.length / row);
+        if (this.settings.isCardWidth) {
+            childWidth = (sandboxWidth - Visual.scrollWidth) / this.settings.cardCount;
+            row = this.settings.cardCount;
+            col = Math.ceil(data.length / row);
+            let leftCount = row * col - data.length;
+            leftWidth = Math.max(0, childWidth * leftCount);
+            let left = sandboxWidth - leftWidth;
+            $(".backG").css("left", left + "px").css("width", (leftWidth - Visual.scrollWidth) + "px");
+        }
+        else {
+            $(".backG").css("left", cardWidth + "px").css("width", leftWidth + "px");
+        }
+        childWidth -= plus;
         for (let j = 0; j < data.length; j++) {
             let category = data[j].category;
-            let div = this.cardDiv.append("div").classed("cardDiv", true).classed("childDiv", true).classed("div_" + j, true).style("padding", this.settings.padding + "px").style("margin", this.settings.margin + "px").style("width", childWidth + "px").attr("category", category);
+            let div = this.cardDiv.append("div").classed("childDiv", true).classed("div_" + j, true).style("padding", this.settings.padding + "px").style("margin", this.settings.margin + "px").style("width", childWidth + "px").attr("category", category);
             if (this.settings.categoryShow) {
                 div.append("h1").text(category).style("font-size", this.settings.categoryFontSize + "px").style("color", this.settings.categoryFontColor).style("font-family", this.settings.categoryFontFamily).style("font-weight", this.settings.categoryFontWeight);
             }
@@ -339,6 +353,13 @@ export class Visual implements IVisual {
             if (data[j].svalue !== null) html = this.renderCard1(data[j].cvalue, data[j].svalue);
             else html = this.renderCard(data[j].cvalue);
             div.node().append(html);
+        }
+        if (!this.settings.isCardWidth) {
+            let height = ($(".childDiv").height() + plus) * col;
+            $(".backG").css("height", height + "px");
+        } else {
+            let height = $(".childDiv").height() + plus, top = height * Math.floor(data.length / row);
+            $(".backG").css("top", top + "px").css("height", height + "px");
         }
     }
 
@@ -623,6 +644,8 @@ export class Visual implements IVisual {
         }
         let data = this.getData(categories, cvalueArr, svalueArr, jvalueArr, groupedCnt);
         this.drawHtml(sandboxWidth, sandboxHeight, data);
+        this.getContextMenu(d3.selectAll(".backG"), this.selectionManager);
+        this.getContextMenu(d3.selectAll(".childDiv"), this.selectionManager);
         this.tooltipServiceWrapper.addTooltip(this.clipSelection, (tooltipEvent: TooltipEventArgs < SelectionIdOption > ) => this.getTooltipData(tooltipEvent)
             , (tooltipEvent: TooltipEventArgs < SelectionIdOption > ) => tooltipEvent.data.identity);
         this.tooltipServiceWrapper.addTooltip(this.divSelection, (tooltipEvent: TooltipEventArgs < SelectionIdOption > ) => this.getTooltipData(tooltipEvent)
