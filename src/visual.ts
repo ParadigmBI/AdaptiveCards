@@ -147,6 +147,7 @@ export class Visual implements IVisual {
     private categoryId;
     private prevTemplateUrl = "https://";
     private formatterValuesArr = [];
+    private formatterJValuesArr = [];
     public static categoryJSON = "{}";
 
     private syncSelectionState(
@@ -214,6 +215,7 @@ export class Visual implements IVisual {
     public renderCard1(templateJSON, dataFields) {
         
         let json = JSON.parse(templateJSON);
+        
         // Create a Template instance from the template payload
         let template = new ACData.Template(json);
         
@@ -489,7 +491,7 @@ export class Visual implements IVisual {
         }
     }
 
-    public getFormatter(dataView) {
+    public getFormatter(dataView, name) {
         let fcolumns = dataView.metadata.columns;
         let formatterValuesArr = [], formatterValuesArra = [], valuesDisplayName = [];
         let valueNames = [], valueSources = dataView.categorical.values;
@@ -497,7 +499,7 @@ export class Visual implements IVisual {
             valueNames.push(valueSources[i].source.displayName);
         }
         for (let i = 0; i < fcolumns.length; i++) {
-             if (fcolumns[i].roles["svalue"]) {
+             if (fcolumns[i].roles[name]) {
                 let formatter = valueFormatter.create({
                     format: valueFormatter.getFormatStringByColumn(
                         dataView.metadata.columns[i],
@@ -524,7 +526,7 @@ export class Visual implements IVisual {
             formatterValuesArr[j] = formatterValuesArra[i];
             formatterValuesArra[i] = tmp;
         }
-        this.formatterValuesArr = formatterValuesArr;
+        return formatterValuesArr;
     }
     
     private getSelectionData(selectionIdOptions, clipSelection) {
@@ -555,12 +557,12 @@ export class Visual implements IVisual {
         this.divSelection.data(this.getSelectionData(selectionIdOptions, this.divSelection));
     }
 
-    private getObjectValue(svalue, valueArr, i, valueName) {
+    private getObjectValue(svalue, valueArr, i, valueName, formatterArr) {
         for (let j = 0; j < valueArr.length; j++) {
             let val = valueArr[j][i], name = valueName[j].toString();
-            let dt = new Date(val);
-            if (val && dt.toString() !== "Invalid Date" && dt.getFullYear() > 1800 && (Visual.ISDATE(val))) svalue[name] = this.getISOString(dt);
-            else svalue[name] = this.formatterValuesArr[j].format(Visual.GETSTRING(val));
+            let dt = new Date(val), formatter = formatterArr[j];
+            if (val && dt.toString() !== "Invalid Date" && dt.getFullYear() > 1800 && (Visual.ISDATE(val))) svalue[name] = this.getISOString(dt, formatter, name);
+            else svalue[name] = formatter.format(Visual.GETSTRING(val));
         }
         return svalue;
     }
@@ -569,22 +571,23 @@ export class Visual implements IVisual {
         let data = [], len = categories.length / groupedCnt;
         for (let i = 0; i < len; i++) {
             let svalue = {}, ind = i * groupedCnt;
-            svalue = this.getObjectValue(svalue, svalueArr, ind, this.svalueName);
+            svalue = this.getObjectValue(svalue, svalueArr, ind, this.svalueName, this.formatterValuesArr);
             svalue[this.settings.jsonName] = [];
             for (let j = 0; j < groupedCnt; j++) {
                 if (ind + j >= categories.length) break;
                 let jvalue = {};
-                svalue[this.settings.jsonName].push(this.getObjectValue(jvalue, jvalueArr, ind + j, this.jvalueName));
+                svalue[this.settings.jsonName].push(this.getObjectValue(jvalue, jvalueArr, ind + j, this.jvalueName, this.formatterJValuesArr));
             }
             data.push({category: categories[ind], cvalue: cvalueArr[0], svalue: svalue});
         }
         return data;
     }
 
-    public getISOString(dt) {
+    public getISOString(dt, formatter, name) {
         let val = dt.toISOString();
-        if (dt.getHours() === 0 && dt.getMinutes() === 0 && dt.getSeconds() === 0) val = val.substr(0, val.length - 5) + "Z";
-        return val;
+        return formatter.format(dt);
+        if (dt.getHours() === 0 && dt.getMinutes() === 0 && dt.getSeconds() === 0) return val.substr(0, val.length - 5) + "Z";
+        return formatter.format(dt);
     }
 
     public update(options: VisualUpdateOptions) {
@@ -633,7 +636,9 @@ export class Visual implements IVisual {
                 jvalueArr.push(tmp);
             }
         }
-        this.getFormatter(dataViews[0]);
+        
+        this.formatterValuesArr = this.getFormatter(dataViews[0], "svalue");
+        this.formatterJValuesArr = this.getFormatter(dataViews[0], "jvalue");
         this.categoryName = null;
         if (categorical.categories) categories = categorical.categories[0].values, this.categoryName = categorical.categories[0].source.displayName, this.categoryId = categorical.categories[0].values[0];
         else categories = this.cvalueName;
