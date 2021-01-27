@@ -496,7 +496,9 @@ export class Visual implements IVisual {
         let formatterValuesArr = [], formatterValuesArra = [], valuesDisplayName = [];
         let valueNames = [], valueSources = dataView.categorical.values;
         for (let i = 0; i < valueSources.length; i++) {
-            valueNames.push(valueSources[i].source.displayName);
+            if(valueSources[i].source.roles[name]) {
+                valueNames.push(valueSources[i].source.displayName);
+            }
         }
         for (let i = 0; i < fcolumns.length; i++) {
              if (fcolumns[i].roles[name]) {
