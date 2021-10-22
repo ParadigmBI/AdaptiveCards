@@ -403,7 +403,7 @@ export class Visual implements IVisual {
         let that = this;
         clipSelection.on('click', (d) => {
             // Allow selection only if the visual is rendered in a view that supports interactivity (e.g. Report)
-            if (that.host.allowInteractions) {
+            if (that.host.hostCapabilities.allowInteractions) {
                 const isCrtlPressed: boolean = (<MouseEvent>d3.event).ctrlKey;
                 that.selectionManager
                     .select(d.identity, isCrtlPressed)
@@ -416,7 +416,7 @@ export class Visual implements IVisual {
         });
 
         clearCatcher.on('click', (d) => {
-            if (that.host.allowInteractions) {
+            if (that.host.hostCapabilities.allowInteractions) {
                 that.selectionManager
                     .clear()
                     .then(() => {

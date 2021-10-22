@@ -1,15 +1,15 @@
 {
   "visual": {
-    "name": "AdaptiveCards 1.0.6",
-    "displayName": "AdaptiveCards 1.0.6",
+    "name": "AdaptiveCards 2.0.0",
+    "displayName": "AdaptiveCards 2.0.0",
     "guid": "adaptiveCards1267F9A0298D434386A9E71CED194547",
     "visualClassName": "Visual",
-    "version": "1.0.6",
+    "version": "2.0.0",
     "description": "AdaptiveCards",
     "supportUrl": "https://paradigmbi.com.au/Contact",
     "gitHubUrl": "https://github.com/ParadigmBI/AdaptiveCards"
   },
-  "apiVersion": "2.6.0",
+  "apiVersion": "3.8.0",
   "author": {
     "name": "Dmitry Vann",
     "email": "dmitry@mikeallen.com.au"
