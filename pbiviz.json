@@ -1,15 +1,27 @@
 {
   "visual": {
+<<<<<<< Updated upstream
     "name": "AdaptiveCards 2.0.0",
     "displayName": "AdaptiveCards 2.0.0",
     "guid": "adaptiveCards1267F9A0298D434386A9E71CED194547",
     "visualClassName": "Visual",
     "version": "2.0.0",
+=======
+    "name": "AdaptiveCards 1.0.7",
+    "displayName": "AdaptiveCards 1.0.7",
+    "guid": "adaptiveCards1267F9A0298D434386A9E71CED194547",
+    "visualClassName": "Visual",
+    "version": "1.0.7",
+>>>>>>> Stashed changes
     "description": "AdaptiveCards",
     "supportUrl": "https://paradigmbi.com.au/Contact",
     "gitHubUrl": "https://github.com/ParadigmBI/AdaptiveCards"
   },
+<<<<<<< Updated upstream
   "apiVersion": "3.8.0",
+=======
+  "apiVersion": "4.1.0",
+>>>>>>> Stashed changes
   "author": {
     "name": "Dmitry Vann",
     "email": "dmitry@mikeallen.com.au"
