@@ -19,7 +19,7 @@ import * as ACData from "adaptivecards-templating";
 
 // import the module
 import * as AdaptiveCards from "adaptivecards";
-import * as ACFabric from "adaptivecards-fabric";
+// import * as ACFabric from "adaptivecards-fabric";
 
 import DataView = powerbi.DataView;
 import DataViewObjects = powerbi.DataViewObjects;
