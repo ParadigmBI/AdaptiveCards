@@ -24,8 +24,8 @@
   "dependencies": {
     "@babel/polyfill": "^7.10.1",
     "@fluentui/react": "^7.132.0",
-    "adaptivecards": "^2.6.0",
-    "adaptivecards-templating": "^1.4.0",
+    "adaptivecards": "^2.11.1",
+    "adaptivecards-templating": "^2.3.1",
     "core-js": "^3.6.5",
     "d3": "^5.16.0",
     "lodash": "^4.17.21",
