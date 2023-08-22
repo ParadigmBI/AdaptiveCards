@@ -6,6 +6,10 @@
     "name": "Mike Allen",
     "email": "mike@mikeallen.com.au"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ParadigmBI/AdaptiveCards"
+  },
   "scripts": {
     "pbiviz": "pbiviz",
     "start": "pbiviz start",
@@ -17,10 +21,6 @@
     "installcert": "pbiviz --install-cert"
   },
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": ""
-  },
   "dependencies": {
     "@babel/polyfill": "^7.10.1",
     "@fluentui/react": "^7.132.0",

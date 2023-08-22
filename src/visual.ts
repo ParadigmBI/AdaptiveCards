@@ -1,7 +1,4 @@
 "use strict";
-
-
-"use strict";
 import "core-js/stable";
 import "./../style/visual.less";
 import 'regenerator-runtime/runtime'
