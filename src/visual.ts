@@ -384,16 +384,17 @@ export class Visual implements IVisual {
     }
 
     private getContextMenu(svg, selection) {
-        svg.on('contextmenu', () => {
-            const mouseEvent: MouseEvent = (<MouseEvent>d3.event);
-            let dataPoint = d3.select(d3.event["currentTarget"]).datum();
-            selection.showContextMenu(dataPoint? dataPoint["identity"] : {}, {
+        svg.on('contextmenu', (event) => {
+            const mouseEvent: MouseEvent = event;
+            let dataPoint = d3.select(event.currentTarget).datum();
+            selection.showContextMenu(dataPoint ? dataPoint["identity"] : {}, {
                 x: mouseEvent.clientX,
                 y: mouseEvent.clientY
             });
             mouseEvent.preventDefault();
-        }); 
+        });
     }
+    
 
     private setBehavior(clipSelection) {
         let clearCatcher = d3.select('#sandbox-host');
