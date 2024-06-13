@@ -693,11 +693,11 @@ export class Visual implements IVisual {
                         }
                         break;
                     case 5:
-                        if (property < 0) settings[propertyName] = 0;
+                        if (parseInt(property.toString()) < 0) settings[propertyName] = 0;
                         else settings[propertyName] = property;
                         break;
                     case 6:
-                        if (property > 0) settings[propertyName] = 0;
+                        if (parseInt(property.toString()) > 0) settings[propertyName] = 0;
                         else settings[propertyName] = property;
                         break;
                 }

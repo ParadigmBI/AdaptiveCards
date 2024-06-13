@@ -1,7 +1,7 @@
 {
   "name": "powerbi-visuals-adaptivecards",
   "description": "AdaptiveCards",
-  "version": "2.2.2pbiviz start",
+  "version": "2.2.3",
   "author": {
     "name": "Mike Allen",
     "email": "mike@mikeallen.com.au"
